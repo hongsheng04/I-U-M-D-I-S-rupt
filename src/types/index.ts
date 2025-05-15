@@ -3,11 +3,12 @@ export interface Location {
   name: string;
   address: string;
   hourlyRate: number;
-  availableSpots: number;
+  availableSpots: number; // This might represent total spots in the lot
 }
 
 export interface BookingDetails {
   location: Location | null;
+  selectedSpot?: string | null; // e.g., "A1", "B2", etc.
   duration: number; // in hours
   vehiclePlate: string;
   totalPrice: number;

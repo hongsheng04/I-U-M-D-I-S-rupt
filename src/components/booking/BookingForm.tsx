@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, Car } from 'lucide-react';
+import { Clock, Car, MapPin } from 'lucide-react';
 import type { BookingDetails, Location } from '@/types';
 
 const bookingFormSchema = z.object({
@@ -18,12 +18,13 @@ const bookingFormSchema = z.object({
 type BookingFormValues = z.infer<typeof bookingFormSchema>;
 
 interface BookingFormProps {
-  selectedLocation: Location | null;
+  selectedLocation: Location; // Now required
+  selectedSpot: string; // Now required
   onSubmit: (data: Pick<BookingDetails, 'duration' | 'vehiclePlate'>) => void;
   isLoading: boolean;
 }
 
-export function BookingForm({ selectedLocation, onSubmit, isLoading }: BookingFormProps) {
+export function BookingForm({ selectedLocation, selectedSpot, onSubmit, isLoading }: BookingFormProps) {
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(bookingFormSchema),
     defaultValues: {
@@ -40,7 +41,7 @@ export function BookingForm({ selectedLocation, onSubmit, isLoading }: BookingFo
     <Card className="shadow-lg mt-8">
       <CardHeader>
         <CardTitle className="flex items-center gap-2"><Clock className="text-primary" /> Booking Details</CardTitle>
-        <CardDescription>Specify your parking duration and vehicle information.</CardDescription>
+        <CardDescription>Specify your parking duration and vehicle information for spot <strong className="text-primary">{selectedSpot}</strong> at <strong className="text-primary">{selectedLocation.name}</strong>.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -71,16 +72,21 @@ export function BookingForm({ selectedLocation, onSubmit, isLoading }: BookingFo
                 </FormItem>
               )}
             />
-            {selectedLocation && (
-              <div className="p-4 bg-secondary rounded-lg shadow">
-                <p className="text-sm text-secondary-foreground">
-                  Estimated Price: ${ (form.watch('duration') * selectedLocation.hourlyRate).toFixed(2) } 
-                  {" "}for {form.watch('duration')} hour(s) at {selectedLocation.name}.
-                </p>
-              </div>
-            )}
-            <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground text-lg py-6" disabled={!selectedLocation || isLoading}>
-              {isLoading ? 'Processing...' : (selectedLocation ? 'Proceed to Payment' : 'Select a location first')}
+            <div className="p-4 bg-secondary rounded-lg shadow">
+              <p className="text-sm text-secondary-foreground">
+                You are booking spot: <strong className="text-primary">{selectedSpot}</strong> at {selectedLocation.name}.
+              </p>
+              <p className="text-sm text-secondary-foreground mt-1">
+                Estimated Price: ${ (form.watch('duration') * selectedLocation.hourlyRate).toFixed(2) } 
+                {" "}for {form.watch('duration')} hour(s).
+              </p>
+            </div>
+            <Button 
+              type="submit" 
+              className="w-full bg-accent hover:bg-accent/90 text-accent-foreground text-lg py-6" 
+              disabled={isLoading}
+            >
+              {isLoading ? 'Processing...' : 'Proceed to Payment'}
               <Car className="ml-2" size={20}/>
             </Button>
           </form>

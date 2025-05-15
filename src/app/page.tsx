@@ -1,9 +1,10 @@
 
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LocationPicker } from '@/components/booking/LocationPicker';
+import { SpotPicker } from '@/components/booking/SpotPicker';
 import { BookingForm } from '@/components/booking/BookingForm';
 import { useBooking } from '@/contexts/BookingContext';
 import { useToast } from '@/hooks/use-toast';
@@ -12,13 +13,36 @@ import { Separator } from '@/components/ui/separator';
 
 export default function BookingPage() {
   const router = useRouter();
-  const { bookingDetails, setBookingDetails } = useBooking();
+  const { bookingDetails, setBookingDetails, resetBooking } = useBooking();
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(bookingDetails.location);
+  const [selectedSpot, setSelectedSpot] = useState<string | null>(bookingDetails.selectedSpot || null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  // Effect to reset spot if location changes or if booking is reset elsewhere
+  useEffect(() => {
+    if (bookingDetails.location !== selectedLocation) {
+      setSelectedLocation(bookingDetails.location);
+      setSelectedSpot(bookingDetails.selectedSpot || null);
+    }
+    if (!bookingDetails.location) { // If booking was reset
+        setSelectedLocation(null);
+        setSelectedSpot(null);
+    }
+  }, [bookingDetails.location, bookingDetails.selectedSpot, selectedLocation]);
+
+
   const handleLocationSelect = (location: Location) => {
     setSelectedLocation(location);
+    setSelectedSpot(null); // Reset spot when new location is picked
+    // Update context partially, SpotPicker will update the spot
+    setBookingDetails(prev => ({ ...prev, location, selectedSpot: null }));
+  };
+
+  const handleSpotSelect = (spot: string) => {
+    setSelectedSpot(spot);
+    // Update context with the selected spot
+    setBookingDetails(prev => ({ ...prev, selectedSpot: spot }));
   };
 
   const handleBookingSubmit = (data: Pick<BookingDetails, 'duration' | 'vehiclePlate'>) => {
@@ -30,10 +54,21 @@ export default function BookingPage() {
       });
       return;
     }
+    if (!selectedSpot) {
+      toast({
+        title: "Error",
+        description: "Please select a parking spot first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     const totalPrice = data.duration * selectedLocation.hourlyRate;
+    
     setBookingDetails({
       location: selectedLocation,
+      selectedSpot: selectedSpot,
       duration: data.duration,
       vehiclePlate: data.vehiclePlate,
       totalPrice,
@@ -41,7 +76,8 @@ export default function BookingPage() {
     
     // Simulate API call delay
     // In a real application, this is where you would integrate with the ParkWatch system
-    // to confirm the booking session for the selectedLocation and its availability.
+    // to confirm the booking session for the selectedLocation, selectedSpot and its availability.
+    // For example, ParkWatch.confirmBooking(selectedLocation.id, selectedSpot, data.duration);
     setTimeout(() => {
       setIsLoading(false);
       router.push('/payment');
@@ -55,8 +91,28 @@ export default function BookingPage() {
         <p className="text-lg text-muted-foreground">Find and book your ParkWatch parking spot in minutes.</p>
       </div>
       <Separator />
-      <LocationPicker selectedLocation={selectedLocation} onLocationSelect={handleLocationSelect} />
-      {selectedLocation && <BookingForm selectedLocation={selectedLocation} onSubmit={handleBookingSubmit} isLoading={isLoading} />}
+      
+      <LocationPicker 
+        selectedLocation={selectedLocation} 
+        onLocationSelect={handleLocationSelect} 
+      />
+
+      {selectedLocation && (
+        <SpotPicker 
+          selectedLocationName={selectedLocation.name}
+          selectedSpot={selectedSpot}
+          onSpotSelect={handleSpotSelect}
+        />
+      )}
+      
+      {selectedLocation && selectedSpot && (
+        <BookingForm 
+          selectedLocation={selectedLocation} 
+          selectedSpot={selectedSpot}
+          onSubmit={handleBookingSubmit} 
+          isLoading={isLoading} 
+        />
+      )}
     </div>
   );
 }

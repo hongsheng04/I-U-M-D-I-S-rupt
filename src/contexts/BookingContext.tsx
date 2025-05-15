@@ -4,16 +4,11 @@ import type { ReactNode } from "react";
 import React, { createContext, useContext, useState } from 'react';
 import type { BookingDetails, BookingContextType, Location } from '@/types';
 
-const initialLocation: Location = {
-  id: '',
-  name: '',
-  address: '',
-  hourlyRate: 0,
-  availableSpots: 0,
-};
+const initialLocation: Location | null = null;
 
 const initialBookingDetails: BookingDetails = {
-  location: null,
+  location: initialLocation,
+  selectedSpot: null,
   duration: 1,
   vehiclePlate: '',
   totalPrice: 0,

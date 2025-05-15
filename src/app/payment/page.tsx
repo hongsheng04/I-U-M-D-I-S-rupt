@@ -7,7 +7,7 @@ import { useBooking } from '@/contexts/BookingContext';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Info } from 'lucide-react';
+import { ArrowLeft, Info, Grid3x3 } from 'lucide-react';
 
 export default function PaymentPage() {
   const router = useRouter();
@@ -16,11 +16,11 @@ export default function PaymentPage() {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (!bookingDetails.location) {
+    if (!bookingDetails.location || !bookingDetails.selectedSpot) {
       // If no booking details, redirect to home
       toast({
         title: "Session Expired",
-        description: "Booking details not found. Please start over.",
+        description: "Booking details not found or incomplete. Please start over.",
         variant: "destructive",
       });
       router.replace('/');
@@ -35,6 +35,7 @@ export default function PaymentPage() {
     const qrData = JSON.stringify({
       bookingId: `PARKPASS-${Date.now()}`,
       location: bookingDetails.location?.name,
+      spot: bookingDetails.selectedSpot,
       plate: bookingDetails.vehiclePlate,
       duration: bookingDetails.duration,
       paid: bookingDetails.totalPrice,
@@ -50,7 +51,7 @@ export default function PaymentPage() {
     router.push('/confirmation');
   };
 
-  if (!bookingDetails.location) {
+  if (!bookingDetails.location || !bookingDetails.selectedSpot) {
     return <div className="text-center py-10">Loading booking details or redirecting...</div>;
   }
 
@@ -68,6 +69,7 @@ export default function PaymentPage() {
           </CardHeader>
           <CardContent className="space-y-3 text-foreground">
             <p><strong>Location:</strong> {bookingDetails.location.name}</p>
+            <p><strong>Spot:</strong> <Grid3x3 className="inline-block mr-1 h-4 w-4 text-primary"/>{bookingDetails.selectedSpot}</p>
             <p><strong>Address:</strong> {bookingDetails.location.address}</p>
             <p><strong>Duration:</strong> {bookingDetails.duration} hour(s)</p>
             <p><strong>Vehicle Plate:</strong> {bookingDetails.vehiclePlate}</p>
