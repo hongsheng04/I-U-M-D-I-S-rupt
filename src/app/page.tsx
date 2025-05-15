@@ -43,6 +43,17 @@ export default function BookingPage() {
   };
 
   const handleSpotSelect = (spot: string) => {
+    const currentBookedSpots = selectedLocation ? (MOCK_BOOKED_SPOTS_BY_LOCATION[selectedLocation.id] || []) : [];
+    if (currentBookedSpots.includes(spot)) {
+        // This should ideally not be triggered if button is disabled, but as a safeguard:
+        toast({
+            title: "Spot Unavailable",
+            description: `Spot ${spot} is already booked. Please choose another.`,
+            variant: "destructive",
+        });
+        return;
+    }
+
     if (selectedSpot === spot) {
       // Deselect if the same spot is clicked again
       setSelectedSpot(null);
@@ -92,6 +103,19 @@ export default function BookingPage() {
       setIsLoading(false); // Set loading to false after attempting navigation
     }, 1000);
   };
+  
+  // Dummy MOCK_BOOKED_SPOTS_BY_LOCATION for handleSpotSelect safeguard, actual data is in SpotPicker.
+  // This is not ideal but for now keeps the logic self-contained in page.tsx for the toast.
+  // A better approach would be a shared service or context for booked spots if it were dynamic.
+  const MOCK_BOOKED_SPOTS_BY_LOCATION: Record<string, string[]> = {
+    'pw_a1': ['A1', 'B2'],
+    'pw_a2': ['C3'],      
+    'pw_a3': ['B1', 'B3'],
+    'pw_b1': ['A2', 'C1', 'C2'],
+    'pw_b3': ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3'],
+    'pw_c1': ['A3'],
+  };
+
 
   return (
     <div className="space-y-8">
@@ -108,6 +132,7 @@ export default function BookingPage() {
 
       {selectedLocation && (
         <SpotPicker 
+          selectedLocationId={selectedLocation.id} // Pass the location ID
           selectedLocationName={selectedLocation.name}
           selectedSpot={selectedSpot}
           onSpotSelect={handleSpotSelect}
@@ -125,3 +150,4 @@ export default function BookingPage() {
     </div>
   );
 }
+

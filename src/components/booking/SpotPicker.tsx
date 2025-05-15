@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Grid3x3 } from 'lucide-react';
 
 interface SpotPickerProps {
+  selectedLocationId: string; // Added to identify the current location
   selectedLocationName: string;
   selectedSpot: string | null;
   onSpotSelect: (spot: string) => void;
@@ -17,10 +18,22 @@ const SPOTS_LAYOUT: string[][] = [
   ['C1', 'C2', 'C3'],
 ];
 
-// Simulate some spots being booked
-const MOCK_BOOKED_SPOTS: string[] = ['A2', 'C1', 'B3'];
+// Simulate some spots being booked per location
+// Keys are location IDs from MOCK_LOCATIONS in LocationPicker.tsx
+const MOCK_BOOKED_SPOTS_BY_LOCATION: Record<string, string[]> = {
+  'pw_a1': ['A1', 'B2'],             // Airport Economy Lot
+  'pw_a2': ['C3'],                   // Downtown Metro Garage
+  'pw_a3': ['B1', 'B3'],             // City Center Mall Parking
+  'pw_b1': ['A2', 'C1', 'C2'],       // University Campus Lot B
+  'pw_b2': [],                       // General Hospital Visitor Parking (no spots booked)
+  'pw_b3': ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3'], // Stadium Event Parking - North (all booked)
+  'pw_c1': ['A3'],                   // Westside Business Park Deck
+  // Locations 'pw_c2' and 'pw_c3' will default to no spots booked as they are not listed here.
+};
 
-export function SpotPicker({ selectedLocationName, selectedSpot, onSpotSelect }: SpotPickerProps) {
+export function SpotPicker({ selectedLocationId, selectedLocationName, selectedSpot, onSpotSelect }: SpotPickerProps) {
+  const bookedSpotsForCurrentLocation = MOCK_BOOKED_SPOTS_BY_LOCATION[selectedLocationId] || [];
+
   return (
     <Card className="shadow-lg mt-8">
       <CardHeader>
@@ -32,7 +45,7 @@ export function SpotPicker({ selectedLocationName, selectedSpot, onSpotSelect }:
       <CardContent>
         <div className="grid grid-cols-3 gap-3 aspect-[4/3] max-w-xs mx-auto">
           {SPOTS_LAYOUT.flat().map((spotId) => {
-            const isBooked = MOCK_BOOKED_SPOTS.includes(spotId);
+            const isBooked = bookedSpotsForCurrentLocation.includes(spotId);
             const isSelected = selectedSpot === spotId;
 
             return (
@@ -53,14 +66,14 @@ export function SpotPicker({ selectedLocationName, selectedSpot, onSpotSelect }:
             );
           })}
         </div>
-        {selectedSpot && !MOCK_BOOKED_SPOTS.includes(selectedSpot) && (
+        {selectedSpot && !bookedSpotsForCurrentLocation.includes(selectedSpot) && (
           <div className="mt-4 p-3 bg-secondary rounded-lg shadow text-center">
             <p className="text-sm text-secondary-foreground">
               Selected Spot: <strong>{selectedSpot}</strong>
             </p>
           </div>
         )}
-         {selectedSpot && MOCK_BOOKED_SPOTS.includes(selectedSpot) && (
+         {selectedSpot && bookedSpotsForCurrentLocation.includes(selectedSpot) && (
           <div className="mt-4 p-3 bg-destructive/20 border border-destructive rounded-lg shadow text-center">
             <p className="text-sm text-destructive-foreground">
               Spot <strong>{selectedSpot}</strong> is booked. Please select another spot.
