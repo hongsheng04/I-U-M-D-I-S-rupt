@@ -97,7 +97,7 @@ export default function BookingPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">Welcome to ParkWatch Pass</h1>
-        <p className="text-lg text-muted-foreground">Find and book your ParkWatch parking spot in minutes.</p>
+        <p className="text-lg text-muted-foreground">Find and book your parking spot in minutes, with real-time availability from the ParkWatch system.</p>
       </div>
       <Separator />
       

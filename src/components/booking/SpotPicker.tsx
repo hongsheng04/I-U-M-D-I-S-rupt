@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from '@/components/ui/button';
@@ -23,7 +24,7 @@ export function SpotPicker({ selectedLocationName, selectedSpot, onSpotSelect }:
         <CardTitle className="flex items-center gap-2">
           <Grid3x3 className="text-primary" /> Select Your Spot at {selectedLocationName}
         </CardTitle>
-        <CardDescription>Choose an available spot from the grid below. This is a reference to ParkWatch lot layouts.</CardDescription>
+        <CardDescription>Choose an available spot. This grid reflects the current layout and availability from the ParkWatch system at {selectedLocationName}.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-3 gap-3 aspect-[4/3] max-w-xs mx-auto">

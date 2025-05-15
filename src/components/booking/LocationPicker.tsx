@@ -29,7 +29,7 @@ export function LocationPicker({ selectedLocation, onLocationSelect }: LocationP
     <Card className="shadow-lg">
       <CardHeader>
         <CardTitle className="flex items-center gap-2"><MapPin className="text-primary" /> Select Parking Destination</CardTitle>
-        <CardDescription>Choose your preferred parking destination from the available locations.</CardDescription>
+        <CardDescription>Choose your preferred parking destination. Availability is powered by the ParkWatch system.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="mb-6 h-64 md:h-96 w-full bg-muted rounded-lg overflow-hidden relative">
@@ -41,7 +41,7 @@ export function LocationPicker({ selectedLocation, onLocationSelect }: LocationP
             data-ai-hint="city map destinations"
           />
            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-            <p className="text-white text-xl font-semibold p-4 bg-black/50 rounded-md">Map Area: Interactive Map Coming Soon!</p>
+            <p className="text-white text-xl font-semibold p-4 bg-black/50 rounded-md">Map Area: Visualizing ParkWatch Monitored Locations (Interactive Map Coming Soon!)</p>
           </div>
         </div>
         
@@ -72,4 +72,3 @@ export function LocationPicker({ selectedLocation, onLocationSelect }: LocationP
     </Card>
   );
 }
-
