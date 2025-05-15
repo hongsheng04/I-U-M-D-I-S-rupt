@@ -13,39 +13,39 @@ interface LocationPickerProps {
 }
 
 const MOCK_LOCATIONS: Location[] = [
-  { id: 'pw_a1', name: 'ParkWatch Lot A1', address: '101 Alpha Rd, Sector A', hourlyRate: 4.5, availableSpots: 15 },
-  { id: 'pw_a2', name: 'ParkWatch Lot A2', address: '102 Alpha Rd, Sector A', hourlyRate: 4.5, availableSpots: 10 },
-  { id: 'pw_a3', name: 'ParkWatch Lot A3', address: '103 Alpha Rd, Sector A', hourlyRate: 4.0, availableSpots: 20 },
-  { id: 'pw_b1', name: 'ParkWatch Lot B1', address: '201 Bravo St, Sector B', hourlyRate: 5.0, availableSpots: 5 },
-  { id: 'pw_b2', name: 'ParkWatch Lot B2', address: '202 Bravo St, Sector B', hourlyRate: 5.0, availableSpots: 12 },
-  { id: 'pw_b3', name: 'ParkWatch Lot B3', address: '203 Bravo St, Sector B', hourlyRate: 4.75, availableSpots: 8 },
-  { id: 'pw_c1', name: 'ParkWatch Lot C1', address: '301 Charlie Ave, Sector C', hourlyRate: 3.5, availableSpots: 30 },
-  { id: 'pw_c2', name: 'ParkWatch Lot C2', address: '302 Charlie Ave, Sector C', hourlyRate: 3.5, availableSpots: 25 },
-  { id: 'pw_c3', name: 'ParkWatch Lot C3', address: '303 Charlie Ave, Sector C', hourlyRate: 3.75, availableSpots: 18 },
+  { id: 'pw_a1', name: 'Airport Economy Lot', address: '789 Skyway Rd, Terminal Area', hourlyRate: 3.0, availableSpots: 150 },
+  { id: 'pw_a2', name: 'Downtown Metro Garage', address: '123 Main St, City Center', hourlyRate: 5.5, availableSpots: 80 },
+  { id: 'pw_a3', name: 'City Center Mall Parking', address: '456 Commerce Ave, Retail District', hourlyRate: 4.0, availableSpots: 200 },
+  { id: 'pw_b1', name: 'University Campus Lot B', address: '10 University Dr, Academic Zone', hourlyRate: 2.5, availableSpots: 120 },
+  { id: 'pw_b2', name: 'General Hospital Visitor Parking', address: '20 Healthway Blvd, Medical Campus', hourlyRate: 4.75, availableSpots: 60 },
+  { id: 'pw_b3', name: 'Stadium Event Parking - North', address: '30 Victory Ln, Sports Complex', hourlyRate: 10.0, availableSpots: 300 },
+  { id: 'pw_c1', name: 'Westside Business Park Deck', address: '500 Corporate Pkwy, Business District', hourlyRate: 3.75, availableSpots: 90 },
+  { id: 'pw_c2', name: 'Coastal View Beach Access', address: '1 Ocean Front Walk, Coastal Area', hourlyRate: 6.0, availableSpots: 40 },
+  { id: 'pw_c3', name: 'Mountain Trailhead Parking', address: '99 Peak Rd, Recreational Area', hourlyRate: 1.5, availableSpots: 50 },
 ];
 
 export function LocationPicker({ selectedLocation, onLocationSelect }: LocationPickerProps) {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2"><MapPin className="text-primary" /> Select ParkWatch Location</CardTitle>
-        <CardDescription>Choose your preferred ParkWatch parking lot from the available locations.</CardDescription>
+        <CardTitle className="flex items-center gap-2"><MapPin className="text-primary" /> Select Parking Destination</CardTitle>
+        <CardDescription>Choose your preferred parking destination from the available locations.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="mb-6 h-64 md:h-96 w-full bg-muted rounded-lg overflow-hidden relative">
           <Image
             src="https://placehold.co/800x600.png"
-            alt="Map placeholder showing ParkWatch lots"
+            alt="Map placeholder showing parking destinations"
             layout="fill"
             objectFit="cover"
-            data-ai-hint="city map parking"
+            data-ai-hint="city map destinations"
           />
            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
             <p className="text-white text-xl font-semibold p-4 bg-black/50 rounded-md">Map Area: Interactive Map Coming Soon!</p>
           </div>
         </div>
         
-        <h3 className="text-lg font-semibold mb-3 text-foreground">Available ParkWatch Lots:</h3>
+        <h3 className="text-lg font-semibold mb-3 text-foreground">Available Parking Destinations:</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {MOCK_LOCATIONS.map((loc) => (
             <Button
@@ -53,6 +53,7 @@ export function LocationPicker({ selectedLocation, onLocationSelect }: LocationP
               variant={selectedLocation?.id === loc.id ? "default" : "outline"}
               onClick={() => onLocationSelect(loc)}
               className="w-full h-auto py-3 flex flex-col items-start text-left shadow-sm hover:shadow-md transition-shadow"
+              aria-label={`Select parking at ${loc.name}`}
             >
               <span className="font-semibold text-base">{loc.name}</span>
               <span className="text-xs text-muted-foreground">{loc.address}</span>
@@ -71,3 +72,4 @@ export function LocationPicker({ selectedLocation, onLocationSelect }: LocationP
     </Card>
   );
 }
+
