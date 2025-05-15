@@ -19,30 +19,39 @@ export default function BookingPage() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // Effect to reset spot if location changes or if booking is reset elsewhere
+  // Effect to sync local state with context, e.g. if booking is reset elsewhere
   useEffect(() => {
-    if (bookingDetails.location !== selectedLocation) {
+    if (bookingDetails.location !== selectedLocation || bookingDetails.selectedSpot !== selectedSpot) {
       setSelectedLocation(bookingDetails.location);
       setSelectedSpot(bookingDetails.selectedSpot || null);
     }
-    if (!bookingDetails.location) { // If booking was reset
-        setSelectedLocation(null);
-        setSelectedSpot(null);
-    }
-  }, [bookingDetails.location, bookingDetails.selectedSpot, selectedLocation]);
+  }, [bookingDetails.location, bookingDetails.selectedSpot, selectedLocation, selectedSpot]);
 
 
   const handleLocationSelect = (location: Location) => {
-    setSelectedLocation(location);
-    setSelectedSpot(null); // Reset spot when new location is picked
-    // Update context partially, SpotPicker will update the spot
-    setBookingDetails(prev => ({ ...prev, location, selectedSpot: null }));
+    if (selectedLocation?.id === location.id) {
+      // Deselect if the same location is clicked again
+      setSelectedLocation(null);
+      setSelectedSpot(null);
+      setBookingDetails(prev => ({ ...prev, location: null, selectedSpot: null }));
+    } else {
+      // Select new location
+      setSelectedLocation(location);
+      setSelectedSpot(null); // Reset spot when new location is picked
+      setBookingDetails(prev => ({ ...prev, location, selectedSpot: null }));
+    }
   };
 
   const handleSpotSelect = (spot: string) => {
-    setSelectedSpot(spot);
-    // Update context with the selected spot
-    setBookingDetails(prev => ({ ...prev, selectedSpot: spot }));
+    if (selectedSpot === spot) {
+      // Deselect if the same spot is clicked again
+      setSelectedSpot(null);
+      setBookingDetails(prev => ({ ...prev, selectedSpot: null }));
+    } else {
+      // Select new spot
+      setSelectedSpot(spot);
+      setBookingDetails(prev => ({ ...prev, selectedSpot: spot }));
+    }
   };
 
   const handleBookingSubmit = (data: Pick<BookingDetails, 'duration' | 'vehiclePlate'>) => {
@@ -76,7 +85,7 @@ export default function BookingPage() {
     
     // Simulate API call delay
     // In a real application, this is where you would integrate with the ParkWatch system
-    // to confirm the booking session for the selectedLocation, selectedSpot and its availability.
+    // to confirm the booking session for the selectedLocation.id, selectedSpot and its availability.
     // For example, ParkWatch.confirmBooking(selectedLocation.id, selectedSpot, data.duration);
     setTimeout(() => {
       setIsLoading(false);
