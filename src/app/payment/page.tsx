@@ -15,17 +15,23 @@ export default function PaymentPage() {
   const { bookingDetails, setQrCodeData } = useBooking();
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const [initialEffectRun, setInitialEffectRun] = useState(false);
 
   useEffect(() => {
     if (!bookingDetails.location || !bookingDetails.selectedSpot) {
-      toast({
-        title: "Session Expired",
-        description: "Booking details not found or incomplete. Please start over.",
-        variant: "destructive",
-      });
-      router.replace('/');
+      if (initialEffectRun) { // Only redirect if the effect has run once and details are still missing/invalid
+        toast({
+          title: "Session Expired",
+          description: "Booking details not found or incomplete. Please start over.",
+          variant: "destructive",
+        });
+        router.replace('/');
+      }
     }
-  }, [bookingDetails, router, toast]);
+    // Mark that the effect has run at least once. This helps prevent redirect on initial load
+    // if context is still propagating.
+    setInitialEffectRun(true); 
+  }, [bookingDetails, router, toast, initialEffectRun]);
 
   const handlePaymentConfirmation = async () => {
     setIsLoading(true);
@@ -51,6 +57,8 @@ export default function PaymentPage() {
     router.push('/confirmation');
   };
 
+  // If booking details are not yet populated (e.g. on initial load or if context is slow),
+  // show a loading message. The useEffect above will handle redirection if they remain missing.
   if (!bookingDetails.location || !bookingDetails.selectedSpot) {
     return <div className="text-center py-10">Loading booking details or redirecting...</div>;
   }
@@ -129,3 +137,4 @@ export default function PaymentPage() {
     </div>
   );
 }
+
