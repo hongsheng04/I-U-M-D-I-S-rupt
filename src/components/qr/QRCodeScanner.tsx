@@ -22,7 +22,7 @@ export function QRCodeScanner() {
       const success = Math.random() > 0.3; // 70% chance of success
       if (success) {
         const mockData = JSON.stringify({
-          bookingId: `PARKPASS-SIM-${Date.now()}`,
+          bookingId: `PARKWATCHPASS-SIM-${Date.now()}`, // Updated prefix
           location: "Simulated Lot A",
           plate: "XYZ-789",
           status: "VALID"
@@ -56,7 +56,7 @@ export function QRCodeScanner() {
     <Card className="shadow-lg max-w-md mx-auto">
       <CardHeader>
         <CardTitle className="flex items-center gap-2"><ScanLine className="text-primary"/> Scan QR Code</CardTitle>
-        <CardDescription>Authenticate entry/exit by scanning a ParkPass QR code.</CardDescription>
+        <CardDescription>Authenticate entry/exit by scanning a ParkWatch Pass QR code.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         {scanStatus === "idle" && (

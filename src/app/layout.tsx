@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'ParkPass - Smart Parking Solutions',
-  description: 'Book parking spaces easily and get your QR code pass.',
+  title: 'ParkWatch Pass - Smart Parking Solutions',
+  description: 'Book parking spaces easily with ParkWatch Pass and get your QR code.',
 };
 
 export default function RootLayout({
@@ -34,7 +34,7 @@ export default function RootLayout({
             {children}
           </main>
           <footer className="bg-muted text-muted-foreground py-6 text-center">
-            <p>&copy; {new Date().getFullYear()} ParkPass. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} ParkWatch Pass. All rights reserved.</p>
           </footer>
           <Toaster />
         </BookingProvider>

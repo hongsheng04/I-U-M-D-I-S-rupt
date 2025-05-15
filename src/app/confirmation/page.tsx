@@ -34,7 +34,7 @@ export default function ConfirmationPage() {
       const pngUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
       let downloadLink = document.createElement("a");
       downloadLink.href = pngUrl;
-      downloadLink.download = `ParkPass-QR-${bookingDetails.vehiclePlate}.png`;
+      downloadLink.download = `ParkWatchPass-QR-${bookingDetails.vehiclePlate}.png`;
       document.body.appendChild(downloadLink);
       downloadLink.click();
       document.body.removeChild(downloadLink);
