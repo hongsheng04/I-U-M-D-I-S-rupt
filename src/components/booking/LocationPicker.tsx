@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -12,23 +13,29 @@ interface LocationPickerProps {
 }
 
 const MOCK_LOCATIONS: Location[] = [
-  { id: 'loc1', name: 'Downtown Central Parking', address: '123 Main St, Anytown', hourlyRate: 5, availableSpots: 25 },
-  { id: 'loc2', name: 'City Mall Garage', address: '456 Market Ave, Anytown', hourlyRate: 3.5, availableSpots: 150 },
-  { id: 'loc3', name: 'Airport Economy Lot', address: '789 Airport Rd, Anytown', hourlyRate: 2, availableSpots: 300 },
+  { id: 'pw_a1', name: 'ParkWatch Lot A1', address: '101 Alpha Rd, Sector A', hourlyRate: 4.5, availableSpots: 15 },
+  { id: 'pw_a2', name: 'ParkWatch Lot A2', address: '102 Alpha Rd, Sector A', hourlyRate: 4.5, availableSpots: 10 },
+  { id: 'pw_a3', name: 'ParkWatch Lot A3', address: '103 Alpha Rd, Sector A', hourlyRate: 4.0, availableSpots: 20 },
+  { id: 'pw_b1', name: 'ParkWatch Lot B1', address: '201 Bravo St, Sector B', hourlyRate: 5.0, availableSpots: 5 },
+  { id: 'pw_b2', name: 'ParkWatch Lot B2', address: '202 Bravo St, Sector B', hourlyRate: 5.0, availableSpots: 12 },
+  { id: 'pw_b3', name: 'ParkWatch Lot B3', address: '203 Bravo St, Sector B', hourlyRate: 4.75, availableSpots: 8 },
+  { id: 'pw_c1', name: 'ParkWatch Lot C1', address: '301 Charlie Ave, Sector C', hourlyRate: 3.5, availableSpots: 30 },
+  { id: 'pw_c2', name: 'ParkWatch Lot C2', address: '302 Charlie Ave, Sector C', hourlyRate: 3.5, availableSpots: 25 },
+  { id: 'pw_c3', name: 'ParkWatch Lot C3', address: '303 Charlie Ave, Sector C', hourlyRate: 3.75, availableSpots: 18 },
 ];
 
 export function LocationPicker({ selectedLocation, onLocationSelect }: LocationPickerProps) {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2"><MapPin className="text-primary" /> Select Parking Location</CardTitle>
-        <CardDescription>Choose your preferred parking spot from the available locations.</CardDescription>
+        <CardTitle className="flex items-center gap-2"><MapPin className="text-primary" /> Select ParkWatch Location</CardTitle>
+        <CardDescription>Choose your preferred ParkWatch parking lot from the available locations.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="mb-6 h-64 md:h-96 w-full bg-muted rounded-lg overflow-hidden relative">
           <Image
             src="https://placehold.co/800x600.png"
-            alt="Map placeholder"
+            alt="Map placeholder showing ParkWatch lots"
             layout="fill"
             objectFit="cover"
             data-ai-hint="city map parking"
@@ -38,7 +45,7 @@ export function LocationPicker({ selectedLocation, onLocationSelect }: LocationP
           </div>
         </div>
         
-        <h3 className="text-lg font-semibold mb-3 text-foreground">Available Locations:</h3>
+        <h3 className="text-lg font-semibold mb-3 text-foreground">Available ParkWatch Lots:</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {MOCK_LOCATIONS.map((loc) => (
             <Button

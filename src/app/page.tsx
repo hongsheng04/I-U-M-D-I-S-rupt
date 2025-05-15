@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -39,6 +40,8 @@ export default function BookingPage() {
     });
     
     // Simulate API call delay
+    // In a real application, this is where you would integrate with the ParkWatch system
+    // to confirm the booking session for the selectedLocation and its availability.
     setTimeout(() => {
       setIsLoading(false);
       router.push('/payment');
@@ -49,7 +52,7 @@ export default function BookingPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">Welcome to ParkWatch Pass</h1>
-        <p className="text-lg text-muted-foreground">Find and book your parking spot in minutes.</p>
+        <p className="text-lg text-muted-foreground">Find and book your ParkWatch parking spot in minutes.</p>
       </div>
       <Separator />
       <LocationPicker selectedLocation={selectedLocation} onLocationSelect={handleLocationSelect} />
