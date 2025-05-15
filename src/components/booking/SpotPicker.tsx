@@ -20,15 +20,11 @@ const SPOTS_LAYOUT: string[][] = [
 
 // Simulate some spots being booked per location
 // Keys are location IDs from MOCK_LOCATIONS in LocationPicker.tsx
+// Changed to start all locations with no spots booked.
 const MOCK_BOOKED_SPOTS_BY_LOCATION: Record<string, string[]> = {
-  'pw_a1': ['A1', 'B2'],             // Airport Economy Lot
-  'pw_a2': ['C3'],                   // Downtown Metro Garage
-  'pw_a3': ['B1', 'B3'],             // City Center Mall Parking
-  'pw_b1': ['A2', 'C1', 'C2'],       // University Campus Lot B
-  'pw_b2': [],                       // General Hospital Visitor Parking (no spots booked)
-  'pw_b3': ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3'], // Stadium Event Parking - North (all booked)
-  'pw_c1': ['A3'],                   // Westside Business Park Deck
-  // Locations 'pw_c2' and 'pw_c3' will default to no spots booked as they are not listed here.
+  // Example: If Airport Economy Lot (pw_a1) had spots A1 and B2 booked:
+  // 'pw_a1': ['A1', 'B2'],
+  // For now, all locations will start with no spots pre-booked.
 };
 
 export function SpotPicker({ selectedLocationId, selectedLocationName, selectedSpot, onSpotSelect }: SpotPickerProps) {
@@ -84,4 +80,3 @@ export function SpotPicker({ selectedLocationId, selectedLocationName, selectedS
     </Card>
   );
 }
-
