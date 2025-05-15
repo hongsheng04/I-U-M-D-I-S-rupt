@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -38,7 +39,7 @@ export default function PaymentPage() {
       spot: bookingDetails.selectedSpot,
       plate: bookingDetails.vehiclePlate,
       duration: bookingDetails.duration,
-      paid: bookingDetails.totalPrice,
+      paid: bookingDetails.totalPrice, // This remains a number, currency symbol is for display
       timestamp: new Date().toISOString(),
     });
     setQrCodeData(qrData);
@@ -74,7 +75,7 @@ export default function PaymentPage() {
             <p><strong>Duration:</strong> {bookingDetails.duration} hour(s)</p>
             <p><strong>Vehicle Plate:</strong> {bookingDetails.vehiclePlate}</p>
             <p className="text-xl font-semibold text-primary">
-              <strong>Total Price:</strong> ${bookingDetails.totalPrice.toFixed(2)}
+              <strong>Total Price:</strong> RM{bookingDetails.totalPrice.toFixed(2)}
             </p>
           </CardContent>
         </Card>

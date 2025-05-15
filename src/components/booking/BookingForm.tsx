@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useForm } from 'react-hook-form';
@@ -77,7 +78,7 @@ export function BookingForm({ selectedLocation, selectedSpot, onSubmit, isLoadin
                 You are booking spot: <strong className="text-primary">{selectedSpot}</strong> at {selectedLocation.name}.
               </p>
               <p className="text-sm text-secondary-foreground mt-1">
-                Estimated Price: ${ (form.watch('duration') * selectedLocation.hourlyRate).toFixed(2) } 
+                Estimated Price: RM{ (form.watch('duration') * selectedLocation.hourlyRate).toFixed(2) } 
                 {" "}for {form.watch('duration')} hour(s).
               </p>
             </div>
