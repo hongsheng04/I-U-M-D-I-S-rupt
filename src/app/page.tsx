@@ -33,12 +33,12 @@ export default function BookingPage() {
       // Deselect if the same location is clicked again
       setSelectedLocation(null);
       setSelectedSpot(null);
-      setBookingDetails(prev => ({ ...prev, location: null, selectedSpot: null }));
+      setBookingDetails(prev => ({ ...prev, location: null, selectedSpot: null, totalPrice: 0 }));
     } else {
       // Select new location
       setSelectedLocation(location);
       setSelectedSpot(null); // Reset spot when new location is picked
-      setBookingDetails(prev => ({ ...prev, location, selectedSpot: null }));
+      setBookingDetails(prev => ({ ...prev, location, selectedSpot: null, totalPrice: 0 }));
     }
   };
 
@@ -46,7 +46,7 @@ export default function BookingPage() {
     if (selectedSpot === spot) {
       // Deselect if the same spot is clicked again
       setSelectedSpot(null);
-      setBookingDetails(prev => ({ ...prev, selectedSpot: null }));
+      setBookingDetails(prev => ({ ...prev, selectedSpot: null, totalPrice: 0 }));
     } else {
       // Select new spot
       setSelectedSpot(spot);
@@ -88,8 +88,8 @@ export default function BookingPage() {
     // to confirm the booking session for the selectedLocation.id, selectedSpot and its availability.
     // For example, ParkWatch.confirmBooking(selectedLocation.id, selectedSpot, data.duration);
     setTimeout(() => {
-      setIsLoading(false);
       router.push('/payment');
+      setIsLoading(false); // Set loading to false after attempting navigation
     }, 1000);
   };
 
