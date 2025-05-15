@@ -1,5 +1,6 @@
+
 import Link from 'next/link';
-import { ParkingCircle, QrCode, ScanLine } from 'lucide-react';
+import { ParkingCircle, QrCode, ScanLine, MessageSquare } from 'lucide-react';
 
 export function Header() {
   return (
@@ -9,7 +10,7 @@ export function Header() {
           <ParkingCircle size={32} />
           <span>ParkWatch Pass</span>
         </Link>
-        <nav className="flex items-center gap-4 sm:gap-6">
+        <nav className="flex items-center gap-3 sm:gap-4">
           <Link href="/" className="text-sm font-medium hover:text-accent transition-colors flex items-center gap-1">
             <ParkingCircle size={18} /> Book
           </Link>
@@ -18,6 +19,9 @@ export function Header() {
           </Link>
           <Link href="/scan" className="text-sm font-medium hover:text-accent transition-colors flex items-center gap-1">
             <ScanLine size={18} /> Scan
+          </Link>
+          <Link href="/feedback" className="text-sm font-medium hover:text-accent transition-colors flex items-center gap-1">
+            <MessageSquare size={18} /> Feedback
           </Link>
         </nav>
       </div>
