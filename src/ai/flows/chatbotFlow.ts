@@ -11,7 +11,7 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit'; // Genkit re-exports Zod's z
 
-export const ChatbotInputSchema = z.object({
+const ChatbotInputSchema = z.object({
   message: z.string().describe('The user message to the chatbot.'),
   history: z.array(
     z.object({
@@ -22,7 +22,7 @@ export const ChatbotInputSchema = z.object({
 });
 export type ChatbotInput = z.infer<typeof ChatbotInputSchema>;
 
-export const ChatbotOutputSchema = z.object({
+const ChatbotOutputSchema = z.object({
   reply: z.string().describe('The chatbot reply to the user message.'),
 });
 export type ChatbotOutput = z.infer<typeof ChatbotOutputSchema>;
