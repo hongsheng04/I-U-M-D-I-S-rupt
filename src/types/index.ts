@@ -4,6 +4,8 @@ export interface Location {
   address: string;
   hourlyRate: number;
   availableSpots: number; // This might represent total spots in the lot
+  latitude?: number; // Geographic coordinate
+  longitude?: number; // Geographic coordinate
 }
 
 export interface BookingDetails {
