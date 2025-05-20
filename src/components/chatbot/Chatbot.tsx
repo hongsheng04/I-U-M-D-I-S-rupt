@@ -33,6 +33,11 @@ export function Chatbot() {
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const scrollAreaViewportRef = useRef<HTMLDivElement | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
 
   const scrollToBottom = () => {
@@ -63,21 +68,16 @@ export function Chatbot() {
     setInputValue('');
     setIsLoading(true);
 
-    // Prepare history for the AI
-    // The history should be pairs of user message and AI response
     const historyPayload: ChatbotInput['history'] = [];
-    // Iterate through messages *before* the current newUserMessage
-    const messagesForHistory = [...messages]; // Use the state *before* adding newUserMessage if it was just added above.
-                                             // Or, use `messages` as it already is before the `setMessages` call that adds the new user message.
-                                             // Let's use the `messages` state which does not yet include the `newUserMessage`.
+    const messagesForHistory = [...messages]; 
     
-    for (let i = 0; i < messages.length; i++) {
-      if (messages[i].sender === 'user' && messages[i+1]?.sender === 'ai') {
+    for (let i = 0; i < messagesForHistory.length; i++) {
+      if (messagesForHistory[i].sender === 'user' && messagesForHistory[i+1]?.sender === 'ai') {
         historyPayload.push({
-          user: messages[i].text,
-          model: messages[i+1].text,
+          user: messagesForHistory[i].text,
+          model: messagesForHistory[i+1].text,
         });
-        i++; // Skip the AI message as it's part of the pair
+        i++; 
       }
     }
 
@@ -98,7 +98,6 @@ export function Chatbot() {
         description: 'Could not get a response from the assistant. Please try again.',
         variant: 'destructive',
       });
-      // Optionally add an error message from AI to the chat
        const errorAiMessage: Message = {
         id: `ai-error-${Date.now()}`,
         text: "I'm sorry, I had trouble connecting. Please try again.",
@@ -142,7 +141,7 @@ export function Chatbot() {
                 >
                   <p className="text-sm whitespace-pre-wrap">{message.text}</p>
                    <p className="text-xs text-muted-foreground/70 mt-1 text-right">
-                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {isMounted ? message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ' '}
                   </p>
                 </div>
                 {message.sender === 'user' && (
